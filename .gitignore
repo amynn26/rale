@@ -1,0 +1,4 @@
+node_modules/
+dist/
+.env
+.helloasso_token.json

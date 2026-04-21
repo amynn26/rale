@@ -1,0 +1,270 @@
+@use "media-queries" as *;
+
+// ===== HERO =====
+.hero {
+  position: relative;
+  overflow: hidden;
+}
+
+.hero__slider {
+  position: relative;
+  height: 70vh;
+  min-height: 56rem;
+  max-height: 80rem;
+}
+
+.hero__slide {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.8s ease, visibility 0.8s ease;
+
+  &--active {
+    opacity: 1;
+    visibility: visible;
+    position: relative;
+    z-index: 1;
+  }
+
+  .container {
+    position: relative;
+    z-index: 2;
+  }
+
+  &--1 .hero__slide-bg {
+    background: linear-gradient(135deg, #1B5E78 0%, #2D7D9A 50%, #1E7A5A 100%);
+  }
+  &--2 .hero__slide-bg {
+    background: linear-gradient(135deg, #1A2B35 0%, #1B5E78 55%, #2D7D9A 100%);
+  }
+  &--3 .hero__slide-bg {
+    background: linear-gradient(135deg, #2D4A5A 0%, #3A8C6E 55%, #2D7D9A 100%);
+  }
+}
+
+.hero__slide-bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+.hero__slide-pattern {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background-image:
+    radial-gradient(circle at 20% 50%, rgba(255,255,255,0.04) 0%, transparent 50%),
+    radial-gradient(circle at 80% 20%, rgba(255,255,255,0.06) 0%, transparent 40%),
+    url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+}
+
+.hero__content {
+  max-width: 72rem;
+  padding: 4rem 0;
+  animation: heroFadeIn 0.8s ease both;
+}
+
+@keyframes heroFadeIn {
+  from { opacity: 0; transform: translateY(2.4rem); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.hero__label {
+  display: inline-block;
+  padding: 0.6rem 1.6rem;
+  background-color: rgba(255, 255, 255, 0.15);
+  color: rgba(255, 255, 255, 0.95);
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  border-radius: var(--border-radius-full);
+  margin-bottom: 2rem;
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.hero__title {
+  font-size: clamp(3.2rem, 5vw, var(--font-size-3xl));
+  font-weight: 800;
+  color: var(--color-white);
+  line-height: 1.1;
+  margin-bottom: 2rem;
+  text-shadow: 0 2px 20px rgba(0, 0, 0, 0.2);
+}
+
+.hero__desc {
+  font-size: var(--font-size-md);
+  color: rgba(255, 255, 255, 0.88);
+  line-height: 1.7;
+  margin-bottom: 3.2rem;
+  max-width: 58rem;
+}
+
+.hero__btns {
+  display: flex;
+  gap: 1.6rem;
+  flex-wrap: wrap;
+}
+
+// Contrôles du slider
+.hero__controls {
+  position: absolute;
+  bottom: 3.2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  z-index: 10;
+}
+
+.hero__arrow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 4rem;
+  height: 4rem;
+  border-radius: var(--border-radius-full);
+  background-color: rgba(255, 255, 255, 0.15);
+  color: var(--color-white);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  backdrop-filter: blur(8px);
+  transition: all var(--transition);
+
+  &:hover {
+    background-color: rgba(255, 255, 255, 0.3);
+    transform: scale(1.1);
+  }
+}
+
+.hero__dots {
+  display: flex;
+  gap: 0.8rem;
+}
+
+.hero__dot {
+  width: 0.8rem;
+  height: 0.8rem;
+  border-radius: var(--border-radius-full);
+  background-color: rgba(255, 255, 255, 0.4);
+  border: none;
+  cursor: pointer;
+  transition: all var(--transition);
+  padding: 0;
+
+  &--active,
+  &[aria-selected="true"] {
+    background-color: var(--color-white);
+    width: 2.4rem;
+  }
+
+  &:hover { background-color: rgba(255, 255, 255, 0.7); }
+}
+
+// ===== ACCÈS RAPIDES (sous le héros) =====
+.quick-actions {
+  background-color: var(--color-white);
+  box-shadow: var(--shadow-md);
+  position: relative;
+  z-index: 5;
+
+  .container { padding-top: 0; padding-bottom: 0; }
+
+  &__grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    border-left: 1px solid var(--color-border-light);
+  }
+}
+
+.quick-action-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 2.8rem 2rem;
+  gap: 1rem;
+  border-right: 1px solid var(--color-border-light);
+  border-bottom: 3px solid transparent;
+  transition: all var(--transition);
+  text-decoration: none;
+  color: var(--color-text);
+
+  &:hover {
+    border-bottom-color: var(--color-primary);
+    background-color: var(--color-primary-lighter);
+
+    .quick-action-card__icon {
+      background-color: var(--color-primary);
+      color: var(--color-white);
+      transform: scale(1.1);
+    }
+  }
+
+  &__icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 6rem;
+    height: 6rem;
+    border-radius: var(--border-radius);
+    background-color: var(--color-primary-lighter);
+    color: var(--color-primary);
+    transition: all var(--transition);
+  }
+
+  &__title {
+    font-size: var(--font-size-base);
+    font-weight: 700;
+    color: var(--color-text);
+  }
+
+  &__desc {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-muted);
+  }
+}
+
+// ===== RESPONSIVE HÉROS =====
+@include sm {
+  .hero__slider {
+    height: auto;
+    min-height: unset;
+  }
+
+  .hero__slide-bg,
+  .hero__slide-pattern {
+    position: absolute;
+    inset: 0;
+  }
+
+  .hero__content {
+    padding: 6rem 0 10rem;
+  }
+
+  .hero__title { font-size: 3rem; }
+
+  .hero__btns { flex-direction: column; }
+
+  .hero__controls { bottom: 1.6rem; gap: 1.2rem; }
+
+  .quick-actions__grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .quick-action-card {
+    padding: 2rem 1.6rem;
+    &__icon { width: 5rem; height: 5rem; }
+  }
+}
+
+@include md {
+  .hero__slider { min-height: 50rem; }
+
+  .quick-actions__grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}

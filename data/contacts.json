@@ -1,0 +1,12 @@
+[
+  {
+    "id": "9F53CE8EB4541C97",
+    "ts": "2026-04-11T17:58:16.105Z",
+    "nom": "Dupont",
+    "prenom": "Marie",
+    "email": "marie@example.com",
+    "telephone": "0600000000",
+    "sujet": "adhesion",
+    "message": "Bonjour, je souhaite rejoindre votre association."
+  }
+]

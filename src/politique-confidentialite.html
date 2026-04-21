@@ -1,0 +1,261 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Politique de confidentialité de l'Association RALE — Protection des données personnelles (RGPD)" />
+  <meta name="robots" content="noindex, follow" />
+  <meta name="theme-color" content="#1B5E78" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <script type="module" src="./index.js"></script>
+  <title>Politique de confidentialité — Association RALE</title>
+</head>
+<body>
+
+  <!-- ===== BARRE D'ACCESSIBILITÉ ===== -->
+  <div class="a11y-bar" role="toolbar" aria-label="Options d'accessibilité">
+    <div class="container">
+      <div class="a11y-bar__inner">
+        <span class="a11y-bar__label">Accessibilité&nbsp;:</span>
+        <div class="a11y-bar__controls">
+          <button class="a11y-btn" id="text-normal" aria-label="Taille de texte normale" title="Texte normal">A</button>
+          <button class="a11y-btn a11y-btn--lg" id="text-large" aria-label="Agrandir le texte" title="Grand texte">A+</button>
+          <button class="a11y-btn" id="contrast-toggle" aria-label="Basculer le contraste élevé" title="Contraste élevé">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+              <circle cx="12" cy="12" r="10"/>
+              <path d="M12 2a10 10 0 0 1 0 20V2z" fill="currentColor" stroke="none"/>
+            </svg>
+          </button>
+        </div>
+        <div class="a11y-bar__contact">
+          <a href="tel:0749966333" class="a11y-bar__link">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13.6a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 3h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 10.6a16 16 0 0 0 6 6l.96-.96a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 21.72 18l.2-1.08z"/></svg>
+            07&nbsp;49&nbsp;96&nbsp;63&nbsp;33
+          </a>
+          <a href="mailto:rale.asso@gmail.com" class="a11y-bar__link">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+            rale.asso@gmail.com
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== EN-TÊTE ===== -->
+  <header class="header" id="header" role="banner">
+    <div class="container">
+      <div class="header__inner">
+        <a href="index.html" class="logo" aria-label="Association RALE — Accueil">
+          <div class="logo__mark" aria-hidden="true"><span>R</span></div>
+          <div class="logo__text">
+            <strong class="logo__name">Association RALE</strong>
+            <span class="logo__tagline">Répit · Loisirs · Inclusion</span>
+          </div>
+        </a>
+        <nav class="nav" id="nav" role="navigation" aria-label="Navigation principale">
+          <ul class="nav__list" role="list">
+            <li class="nav__item"><a href="index.html#about"    class="nav__link">L'association</a></li>
+            <li class="nav__item"><a href="index.html#services" class="nav__link">Nos actions</a></li>
+            <li class="nav__item"><a href="index.html#events"   class="nav__link">Participer</a></li>
+            <li class="nav__item"><a href="index.html#news"     class="nav__link">Actualités</a></li>
+            <li class="nav__item"><a href="index.html#contact"  class="nav__link">Contact</a></li>
+          </ul>
+        </nav>
+        <div class="header__actions">
+          <a href="index.html#contact" class="btn btn--accent btn--sm header__cta">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13.6a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 3h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 10.6a16 16 0 0 0 6 6l.96-.96a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 21.72 18l.2-1.08z"/></svg>
+            Nous contacter
+          </a>
+          <button class="hamburger" id="hamburger" aria-label="Ouvrir le menu" aria-expanded="false" aria-controls="nav">
+            <span class="hamburger__line"></span>
+            <span class="hamburger__line"></span>
+            <span class="hamburger__line"></span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main id="main-content">
+
+    <!-- ===== HERO PAGE LÉGALE ===== -->
+    <div class="page-hero">
+      <div class="container">
+        <div class="page-hero__content">
+          <a href="index.html" class="page-hero__back">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="15 18 9 12 15 6"/></svg>
+            Retour à l'accueil
+          </a>
+          <h1 class="page-hero__title">Politique de confidentialité</h1>
+          <p class="page-hero__subtitle">Vos données personnelles nous sont confiées. Nous les traitons avec le plus grand soin, conformément au RGPD.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== CONTENU LÉGAL ===== -->
+    <section class="section legal-content">
+      <div class="container">
+        <div class="legal-body">
+
+          <article class="legal-section">
+            <h2>1. Responsable du traitement</h2>
+            <p>Le responsable du traitement des données personnelles collectées via ce site est :</p>
+            <ul>
+              <li><strong>Association RALE</strong> — Répit pour Autistes et Loisirs Éducatifs</li>
+              <li>6 Chemin des écoliers, 78270 Bonnières-sur-Seine</li>
+              <li>Email : <a href="mailto:rale.asso@gmail.com">rale.asso@gmail.com</a></li>
+              <li>Téléphone : <a href="tel:0749966333">07 49 96 63 33</a></li>
+            </ul>
+          </article>
+
+          <article class="legal-section">
+            <h2>2. Données collectées et finalités</h2>
+            <p>Nous collectons uniquement les données que vous nous transmettez volontairement via le formulaire de contact :</p>
+            <ul>
+              <li><strong>Nom et prénom</strong> — pour vous identifier et personnaliser notre réponse</li>
+              <li><strong>Adresse email</strong> — pour vous répondre par email</li>
+              <li><strong>Numéro de téléphone</strong> (facultatif) — pour vous rappeler si nécessaire</li>
+              <li><strong>Sujet et message</strong> — pour traiter votre demande</li>
+            </ul>
+            <p>Ces données sont utilisées exclusivement pour répondre à vos demandes. Elles ne sont pas utilisées à des fins commerciales.</p>
+          </article>
+
+          <article class="legal-section">
+            <h2>3. Base légale du traitement</h2>
+            <p>Le traitement de vos données repose sur votre consentement explicite (case à cocher du formulaire de contact), conformément à l'article 6.1.a du Règlement Général sur la Protection des Données (RGPD).</p>
+          </article>
+
+          <article class="legal-section">
+            <h2>4. Durée de conservation</h2>
+            <p>Vos données sont conservées pendant une durée maximale de <strong>3 ans</strong> à compter de votre dernier contact avec l'association, puis supprimées ou anonymisées.</p>
+          </article>
+
+          <article class="legal-section">
+            <h2>5. Destinataires des données</h2>
+            <p>Vos données sont accessibles uniquement aux membres du bureau de l'Association RALE habilités à traiter les demandes. Elles ne sont transmises à aucun tiers, ni vendues, ni louées.</p>
+          </article>
+
+          <article class="legal-section">
+            <h2>6. Vos droits</h2>
+            <p>Conformément au RGPD, vous disposez des droits suivants sur vos données personnelles :</p>
+            <ul>
+              <li><strong>Droit d'accès</strong> — obtenir une copie de vos données</li>
+              <li><strong>Droit de rectification</strong> — corriger vos données inexactes</li>
+              <li><strong>Droit à l'effacement</strong> — demander la suppression de vos données</li>
+              <li><strong>Droit à la limitation</strong> — limiter le traitement de vos données</li>
+              <li><strong>Droit d'opposition</strong> — vous opposer au traitement de vos données</li>
+              <li><strong>Droit à la portabilité</strong> — recevoir vos données dans un format structuré</li>
+            </ul>
+            <p>Pour exercer ces droits, contactez-nous par email : <a href="mailto:rale.asso@gmail.com">rale.asso@gmail.com</a> ou par courrier à notre adresse.</p>
+            <p>En cas de litige, vous pouvez introduire une réclamation auprès de la <strong>CNIL</strong> (Commission Nationale de l'Informatique et des Libertés) : <a href="https://www.cnil.fr" target="_blank" rel="noopener noreferrer">www.cnil.fr</a></p>
+          </article>
+
+          <article class="legal-section">
+            <h2>7. Sécurité des données</h2>
+            <p>L'Association RALE met en œuvre les mesures techniques et organisationnelles appropriées pour protéger vos données contre tout accès non autorisé, perte, altération ou divulgation. Les données collectées via le formulaire de contact sont transmises via une connexion sécurisée (HTTPS).</p>
+          </article>
+
+          <article class="legal-section">
+            <h2>8. Cookies</h2>
+            <p>Ce site n'utilise que des cookies techniques strictement nécessaires à son bon fonctionnement :</p>
+            <ul>
+              <li><strong>rale-text-size</strong> — mémorise votre préférence de taille de texte (localStorage)</li>
+              <li><strong>rale-high-contrast</strong> — mémorise votre préférence de contraste (localStorage)</li>
+            </ul>
+            <p>Ces préférences sont stockées localement dans votre navigateur et ne sont jamais transmises à nos serveurs. Aucun cookie de traçage, analytique ou publicitaire n'est utilisé.</p>
+          </article>
+
+          <article class="legal-section">
+            <h2>9. Modifications de la politique</h2>
+            <p>Nous nous réservons le droit de modifier la présente politique de confidentialité. Toute modification sera publiée sur cette page avec la date de mise à jour. Nous vous encourageons à la consulter régulièrement.</p>
+          </article>
+
+          <article class="legal-section">
+            <h2>10. Contact</h2>
+            <p>Pour toute question relative à la protection de vos données personnelles :</p>
+            <ul>
+              <li>Email : <a href="mailto:rale.asso@gmail.com">rale.asso@gmail.com</a></li>
+              <li>Courrier : Association RALE, 6 Chemin des écoliers, 78270 Bonnières-sur-Seine</li>
+            </ul>
+          </article>
+
+          <p class="legal-update"><em>Dernière mise à jour : avril 2026</em></p>
+
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ===== PIED DE PAGE ===== -->
+  <footer class="footer" role="contentinfo">
+    <div class="footer__top">
+      <div class="container">
+        <div class="footer__grid">
+
+          <div class="footer__col footer__col--brand">
+            <a href="index.html" class="footer__logo" aria-label="Association RALE — Accueil">
+              <div class="logo__mark logo__mark--sm" aria-hidden="true"><span>R</span></div>
+              <span class="footer__logo-name">Association RALE</span>
+            </a>
+            <p class="footer__desc">Répit pour les aidants, loisirs éducatifs adaptés et soutien aux familles de personnes autistes à Bonnières-sur-Seine.</p>
+            <address class="footer__address">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+              6 Chemin des écoliers<br>78270 Bonnières-sur-Seine
+            </address>
+          </div>
+
+          <div class="footer__col">
+            <h4 class="footer__col-title">L'association</h4>
+            <ul class="footer__links">
+              <li><a href="index.html#about">Qui sommes-nous ?</a></li>
+              <li><a href="index.html#team">Notre équipe</a></li>
+              <li><a href="index.html#values">Nos valeurs</a></li>
+              <li><a href="index.html#news">Actualités</a></li>
+            </ul>
+          </div>
+
+          <div class="footer__col">
+            <h4 class="footer__col-title">Nos actions</h4>
+            <ul class="footer__links">
+              <li><a href="index.html#services">Répit pour les aidants</a></li>
+              <li><a href="index.html#services">Loisirs éducatifs</a></li>
+              <li><a href="index.html#services">Accompagnement</a></li>
+              <li><a href="index.html#events">Événements</a></li>
+            </ul>
+          </div>
+
+          <div class="footer__col">
+            <h4 class="footer__col-title">Nous joindre</h4>
+            <ul class="footer__contact-list">
+              <li><a href="tel:0749966333"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13.6a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 3h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 10.6a16 16 0 0 0 6 6l.96-.96a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 21.72 18l.2-1.08z"/></svg> 07 49 96 63 33</a></li>
+              <li><a href="mailto:rale.asso@gmail.com"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg> rale.asso@gmail.com</a></li>
+            </ul>
+            <p class="footer__hours"><strong>Permanence :</strong><br>Mar. & Jeu. : 14h – 18h<br>Sam. : 10h – 13h</p>
+          </div>
+
+        </div>
+      </div>
+    </div>
+    <div class="footer__bottom">
+      <div class="container">
+        <div class="footer__bottom-inner">
+          <p class="footer__copyright">© <span id="current-year">2026</span> Association RALE — Tous droits réservés.</p>
+          <nav class="footer__legal" aria-label="Liens légaux">
+            <a href="mentions-legales.html">Mentions légales</a>
+            <a href="politique-confidentialite.html" aria-current="page">Politique de confidentialité</a>
+            <a href="index.html#contact">Contact</a>
+          </nav>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <button class="back-to-top" id="back-to-top" aria-label="Retour en haut de page">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="18 15 12 9 6 15"/></svg>
+  </button>
+
+</body>
+</html>

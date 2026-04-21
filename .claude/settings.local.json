@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "WebFetch(domain:info.helloasso.com)",
+      "Bash(npm audit:*)",
+      "Bash(npm install:*)"
+    ]
+  }
+}
