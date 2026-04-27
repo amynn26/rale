@@ -6,9 +6,9 @@
  *   POST /api/contact               → Formulaire de contact
  *   POST /api/newsletter            → Inscription newsletter
  *   POST /api/adhesion              → Demande d'adhésion
- *   POST /api/webhook/helloasso     → Dons HelloAsso (webhook HMAC)
+ *   POST /api/donation/intent       → Intention de don (virement / chèque)
  *
- * Variables d'environnement → voir .env.example
+ * Variables d'environnement → voir .env
  */
 
 import "dotenv/config";
@@ -26,10 +26,8 @@ import contactRoutes    from "./src/routes/contactRoutes.js";
 import newsletterRoutes from "./src/routes/newsletterRoutes.js";
 import adhesionRoutes   from "./src/routes/adhesionRoutes.js";
 import donationRoutes   from "./src/routes/donationRoutes.js";
-import webhookRoutes    from "./src/routes/webhookRoutes.js";
 import adminRoutes      from "./src/routes/adminRoutes.js";
 
-// ── Connexion MongoDB ──────────────────────────────────────────
 connectDB();
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -38,7 +36,23 @@ const PORT      = process.env.PORT || 3000;
 const IS_PROD   = process.env.NODE_ENV === "production";
 
 // ── Sécurité HTTP ──────────────────────────────────────────────
-app.use(helmet({ contentSecurityPolicy: IS_PROD ? undefined : false }));
+app.use(helmet({
+  contentSecurityPolicy: {
+    directives: {
+      defaultSrc:  ["'self'"],
+      scriptSrc:   ["'self'", "https://fonts.googleapis.com"],
+      styleSrc:    ["'self'", "'unsafe-inline'", "https://fonts.googleapis.com"],
+      fontSrc:     ["'self'", "https://fonts.gstatic.com"],
+      imgSrc:      ["'self'", "data:"],
+      connectSrc:  ["'self'"],
+      objectSrc:   ["'none'"],
+      baseUri:     ["'self'"],
+      frameAncestors: ["'none'"],
+    },
+  },
+  referrerPolicy: { policy: "strict-origin-when-cross-origin" },
+  crossOriginEmbedderPolicy: false,
+}));
 
 const ALLOWED_ORIGINS = process.env.ALLOWED_ORIGINS
   ? process.env.ALLOWED_ORIGINS.split(",").map((o) => o.trim())
@@ -53,10 +67,6 @@ app.use(cors({
 }));
 
 app.use(morgan("dev"));
-
-// ── Webhook HelloAsso — DOIT être monté AVANT express.json() ──
-// (le webhook a besoin du corps brut pour la vérification HMAC)
-app.use("/api/webhook", webhookRoutes);
 
 // ── Parseurs de corps ──────────────────────────────────────────
 app.use(express.json({ limit: "16kb" }));
@@ -84,6 +94,7 @@ app.get("/api/health", (_req, res) => {
     timestamp: new Date().toISOString(),
     smtp:      Boolean(process.env.SMTP_HOST),
     db:        Boolean(process.env.MONGO_URI),
+    iban:      Boolean(process.env.ASSO_IBAN && !process.env.ASSO_IBAN.includes("XXXX")),
   });
 });
 
@@ -104,8 +115,9 @@ if (fs.existsSync(distPath)) {
 // eslint-disable-next-line no-unused-vars
 app.use((err, _req, res, _next) => {
   const status = err.status || 500;
+  const safe   = IS_PROD ? "Erreur interne" : err.message;
   console.error(`Erreur ${status} :`, err.message);
-  res.status(status).json({ success: false, error: err.message || "Erreur interne" });
+  res.status(status).json({ success: false, error: safe });
 });
 
 // ── Démarrage ──────────────────────────────────────────────────
@@ -118,10 +130,13 @@ app.listen(PORT, () => {
   if (!process.env.MONGO_URI) {
     console.log(`   ⚠  MONGO_URI non configuré — les données ne seront pas persistées.`);
   }
-  if (!process.env.HELLOASSO_SECRET) {
-    console.log(`   ⚠  HELLOASSO_SECRET absent — les webhooks HelloAsso ne sont PAS vérifiés (risque de fraude).`);
+  if (!process.env.ASSO_IBAN || process.env.ASSO_IBAN.includes("XXXX")) {
+    console.log(`   ⚠  ASSO_IBAN non configuré — renseignez le RIB de l'association dans .env`);
   }
-  if (!process.env.ADMIN_KEY) {
-    console.log(`   ⚠  ADMIN_KEY absent — le tableau de bord admin (/api/admin) est désactivé.`);
+  if (!process.env.ASSO_BIC || process.env.ASSO_BIC.includes("XXXX")) {
+    console.log(`   ⚠  ASSO_BIC non configuré — renseignez le BIC de l'association dans .env`);
+  }
+  if (!process.env.ADMIN_KEY || process.env.ADMIN_KEY === "changez_cette_cle_maintenant") {
+    console.log(`   ⚠  ADMIN_KEY non sécurisée — changez-la dans .env avant la mise en production.`);
   }
 });

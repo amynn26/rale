@@ -531,7 +531,19 @@ select.form-control {
     }
   }
 
-  &__helloasso-info {
+  &__required {
+    color: #DC2626;
+    margin-left: 0.2rem;
+  }
+
+  &__section-label {
+    font-size: var(--font-size-sm);
+    font-weight: 600;
+    color: var(--color-text);
+    margin: 0.4rem 0 1rem;
+  }
+
+  &__method-info {
     display: flex;
     align-items: flex-start;
     gap: 1rem;
@@ -540,19 +552,23 @@ select.form-control {
     border-radius: var(--border-radius);
     font-size: var(--font-size-sm);
     color: var(--color-primary-dark);
-    margin-bottom: 1.6rem;
+    margin-top: 1.2rem;
     line-height: 1.6;
 
-    svg { flex-shrink: 0; margin-top: 0.1rem; }
+    svg { flex-shrink: 0; margin-top: 0.15rem; }
   }
 
   &__card-errors {
-    min-height: 2rem;
     font-size: var(--font-size-sm);
     color: #DC2626;
     font-weight: 500;
-    margin-top: 0.8rem;
-    margin-bottom: 0.4rem;
+    padding: 1rem 1.4rem;
+    background: #fef2f2;
+    border-radius: var(--border-radius);
+    border: 1px solid #fecaca;
+    margin-top: 1.2rem;
+
+    &[hidden] { display: none; }
   }
 
   &__submit {
@@ -589,49 +605,196 @@ select.form-control {
     margin: 1.6rem 0 0;
     font-size: var(--font-size-xs);
     color: var(--color-text-light);
+  }
+}
 
-    svg { vertical-align: middle; }
+// ── Onglets méthode de paiement ────────────────────────────────
+.donate-tabs {
+  display: flex;
+  gap: 0.8rem;
+  margin-bottom: 0.4rem;
+}
+
+.donate-tab-btn {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  padding: 1rem 1.2rem;
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  color: var(--color-text-muted);
+  background: var(--color-bg-alt);
+  border: 2px solid var(--color-border);
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  transition: all var(--transition);
+
+  &:hover {
+    border-color: var(--color-primary);
+    color: var(--color-primary);
+    background: var(--color-primary-lighter);
   }
 
-  // Écran succès
-  &__success {
+  &.is-active {
+    border-color: var(--color-primary);
+    color: var(--color-primary);
+    background: var(--color-primary-lighter);
+  }
+
+  &:focus-visible { outline: 3px solid var(--color-primary); outline-offset: 2px; }
+}
+
+.donate-tab-panel {
+  &[hidden] { display: none; }
+}
+
+// ── Écran de confirmation ──────────────────────────────────────
+.donate-success {
+  text-align: center;
+  padding: 0.8rem 0 0;
+
+  &__icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 7.2rem;
+    height: 7.2rem;
+    border-radius: var(--border-radius-full);
+    background: linear-gradient(135deg, #3A8C6E22, #1B5E7822);
+    color: #3A8C6E;
+    margin-bottom: 1.6rem;
+  }
+
+  &__title {
+    font-size: var(--font-size-xl);
+    font-weight: 800;
+    color: var(--color-text);
+    margin: 0 0 0.8rem;
+  }
+
+  &__subtitle {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-muted);
+    line-height: 1.7;
+    margin: 0 0 2rem;
+
+    strong { color: var(--color-text); }
+  }
+
+  &__btn {
+    margin-top: 2rem;
+    width: 100%;
+  }
+}
+
+// ── Instructions bancaires ─────────────────────────────────────
+.donate-instructions {
+  text-align: left;
+  background: var(--color-bg-alt);
+  border-radius: var(--border-radius-lg);
+  padding: 1.6rem;
+  margin-bottom: 0;
+
+  &__title {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    font-size: var(--font-size-md);
+    font-weight: 700;
+    color: var(--color-primary-dark);
+    margin: 0 0 1.4rem;
+  }
+
+  &__grid { display: flex; flex-direction: column; gap: 0.2rem; }
+
+  &__row {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    padding: 0.8rem 0;
+    border-bottom: 1px solid var(--color-border-light);
+
+    &:last-child { border-bottom: none; }
+
+    &--highlight {
+      background: var(--color-primary-lighter);
+      border-radius: var(--border-radius);
+      padding: 1rem 1.2rem;
+      margin-top: 0.4rem;
+      border-bottom: none;
+    }
+  }
+
+  &__label {
+    flex-shrink: 0;
+    width: 13rem;
+    font-size: var(--font-size-xs);
+    font-weight: 600;
+    color: var(--color-text-muted);
+    padding-top: 0.15rem;
+  }
+
+  &__value {
+    font-size: var(--font-size-sm);
+    color: var(--color-text);
+    line-height: 1.5;
+
+    &--mono {
+      font-family: monospace;
+      letter-spacing: 0.05em;
+      font-size: var(--font-size-sm);
+    }
+
+    &--amount {
+      font-weight: 700;
+      color: #3A8C6E;
+      font-size: var(--font-size-md);
+    }
+
+    &--ref {
+      font-family: monospace;
+      font-weight: 800;
+      color: var(--color-primary);
+      font-size: var(--font-size-md);
+      letter-spacing: 0.08em;
+    }
+  }
+
+  &__qr {
     text-align: center;
-    padding: 2.4rem 0;
+    margin-top: 1.6rem;
+    padding-top: 1.6rem;
+    border-top: 1px solid var(--color-border-light);
 
     &[hidden] { display: none; }
   }
 
-  &__success-icon {
-    display: inline-flex;
+  &__qr-label {
+    display: flex;
     align-items: center;
     justify-content: center;
-    width: 8rem;
-    height: 8rem;
-    border-radius: var(--border-radius-full);
-    background: var(--color-secondary-lighter);
-    color: var(--color-secondary);
-    margin-bottom: 2rem;
-  }
-
-  &__success-title {
-    font-size: var(--font-size-xl);
-    font-weight: 800;
-    color: var(--color-text);
-    margin: 0 0 1rem;
-  }
-
-  &__success-amount {
-    font-size: 3.2rem;
-    font-weight: 800;
-    color: var(--color-secondary);
-    margin: 0 0 1.6rem;
-  }
-
-  &__success-text {
+    gap: 0.6rem;
     font-size: var(--font-size-sm);
-    color: var(--color-text-muted);
-    line-height: 1.7;
-    margin: 0 0 2.8rem;
+    font-weight: 600;
+    color: var(--color-primary-dark);
+    margin: 0 0 1.2rem;
+  }
+
+  &__qr-img {
+    width: 16rem;
+    height: 16rem;
+    border-radius: var(--border-radius);
+    display: block;
+    margin: 0 auto 0.8rem;
+    border: 3px solid var(--color-primary-lighter);
+  }
+
+  &__qr-hint {
+    font-size: var(--font-size-xs);
+    color: var(--color-text-light);
+    margin: 0;
   }
 }
 
@@ -640,7 +803,7 @@ select.form-control {
   to   { opacity: 1; transform: scale(1) translateY(0); }
 }
 
-// ── Toast de remerciement (retour depuis HelloAsso) ──────────────
+// ── Toast de remerciement ──────────────────────────────────────
 .donate-toast {
   position: fixed;
   bottom: 2.4rem;

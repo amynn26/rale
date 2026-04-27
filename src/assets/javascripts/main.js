@@ -414,14 +414,13 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // ──────────────────────────────────────────
-  // 10. WIDGET DE DON — HELLOASSO
+  // 10. WIDGET DE DON
   // ──────────────────────────────────────────
-  const donateAmountBtns = document.querySelectorAll(".donate-amount-btn");
+  const donateAmountBtns  = document.querySelectorAll(".donate-amount-btn");
   const donateCustomInput = document.getElementById("donate-custom-amount");
   const donateImpactMsg   = document.getElementById("donate-impact-msg");
   const donateBtn         = document.getElementById("donate-btn");
 
-  // Montant courant sélectionné (en euros)
   let selectedAmount = 0;
 
   function setImpactMessage(msg) {
@@ -439,9 +438,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function setSelectedAmount(euros) {
     selectedAmount = euros;
-    if (donateBtn) {
-      donateBtn.disabled = euros <= 0;
-    }
+    if (donateBtn) donateBtn.disabled = euros <= 0;
   }
 
   function selectAmountBtn(btn) {
@@ -473,90 +470,187 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // ── MODAL HELLOASSO ───────────────────────────────────────────────
+  // ── MODAL — Virement & Chèque ─────────────────────────────────
   const donateModal    = document.getElementById("donate-modal");
   const modalOverlay   = document.getElementById("donate-modal-overlay");
   const modalClose     = document.getElementById("donate-modal-close");
-  const haForm         = document.getElementById("donate-helloasso-form");
-  const haSubmitBtn    = document.getElementById("donate-helloasso-submit");
-  const haErrors       = document.getElementById("donate-errors");
   const modalAmountVal = document.getElementById("modal-amount-value");
   const modalAmountNet = document.getElementById("modal-amount-net");
   const modalSubmitAmt = document.getElementById("modal-submit-amount");
+  const stepForm       = document.getElementById("donate-step-form");
+  const stepSuccess    = document.getElementById("donate-step-success");
+  const donateForm     = document.getElementById("donate-form");
+  const donateSubmitBtn = document.getElementById("donate-submit-btn");
 
+  let activeTab = "virement";
+
+  // ── Onglets méthode ───────────────────────────────────────────
+  document.querySelectorAll(".donate-tab-btn").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      activeTab = btn.dataset.tab;
+      document.querySelectorAll(".donate-tab-btn").forEach((b) => {
+        const sel = b.dataset.tab === activeTab;
+        b.classList.toggle("is-active", sel);
+        b.setAttribute("aria-selected", String(sel));
+      });
+      document.querySelectorAll(".donate-tab-panel").forEach((p) => {
+        p.hidden = p.id !== `tab-panel-${activeTab}`;
+      });
+    });
+  });
+
+  // ── Ouverture / fermeture modal ───────────────────────────────
   function openDonateModal(euros) {
     if (!donateModal) return;
     const net = Math.round(euros * 0.34);
     if (modalAmountVal) modalAmountVal.textContent = `${euros} €`;
     if (modalAmountNet) modalAmountNet.textContent = `${net} €`;
     if (modalSubmitAmt) modalSubmitAmt.textContent = `${euros} €`;
+
+    if (stepForm)    stepForm.hidden    = false;
+    if (stepSuccess) stepSuccess.hidden = true;
+
+    donateForm?.querySelectorAll("input").forEach((el) => {
+      el.value = "";
+      el.classList.remove("is-valid", "is-invalid");
+    });
+    const errEl = document.getElementById("donate-errors");
+    if (errEl) { errEl.textContent = ""; errEl.hidden = true; }
+    if (donateSubmitBtn) { donateSubmitBtn.classList.remove("is-loading"); donateSubmitBtn.disabled = false; }
+
+    // Réinitialiser sur l'onglet virement
+    activeTab = "virement";
+    document.querySelectorAll(".donate-tab-btn").forEach((b) => {
+      const sel = b.dataset.tab === "virement";
+      b.classList.toggle("is-active", sel);
+      b.setAttribute("aria-selected", String(sel));
+    });
+    document.querySelectorAll(".donate-tab-panel").forEach((p) => {
+      p.hidden = p.id !== "tab-panel-virement";
+    });
+
     donateModal.hidden = false;
     document.body.style.overflow = "hidden";
-    setTimeout(() => document.getElementById("donate-card-name")?.focus(), 100);
+    setTimeout(() => document.getElementById("donate-name")?.focus(), 100);
   }
 
   function closeDonateModal() {
     if (!donateModal) return;
     donateModal.hidden = true;
     document.body.style.overflow = "";
-    if (haErrors) haErrors.textContent = "";
-    if (haForm) haForm.querySelectorAll("input").forEach((el) => (el.value = ""));
-    if (haSubmitBtn) {
-      haSubmitBtn.classList.remove("is-loading");
-      haSubmitBtn.disabled = false;
-    }
   }
 
-  if (donateBtn) donateBtn.addEventListener("click", () => openDonateModal(selectedAmount));
+  if (donateBtn)    donateBtn.addEventListener("click", () => openDonateModal(selectedAmount));
   modalOverlay?.addEventListener("click", closeDonateModal);
-  modalClose?.addEventListener("click", closeDonateModal);
+  modalClose?.addEventListener("click",   closeDonateModal);
+  document.getElementById("donate-success-close")?.addEventListener("click", closeDonateModal);
 
   document.addEventListener("keydown", (e) => {
     if (e.key === "Escape" && donateModal && !donateModal.hidden) closeDonateModal();
   });
 
-  // Soumission → appel API backend → redirection vers HelloAsso
-  if (haForm) {
-    haForm.addEventListener("submit", async (e) => {
-      e.preventDefault();
-      const name  = document.getElementById("donate-card-name")?.value.trim();
-      const email = document.getElementById("donate-card-email")?.value.trim();
+  // ── Soumission du formulaire ──────────────────────────────────
+  const RE_EMAIL_FRONT = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-      haSubmitBtn.classList.add("is-loading");
-      haSubmitBtn.disabled = true;
-      if (haErrors) haErrors.textContent = "";
+  if (donateForm) {
+    donateForm.addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      const name  = document.getElementById("donate-name")?.value.trim();
+      const email = document.getElementById("donate-email")?.value.trim();
+      const errEl = document.getElementById("donate-errors");
+
+      if (!name || name.length < 2) {
+        if (errEl) { errEl.textContent = "Veuillez saisir votre prénom et nom."; errEl.hidden = false; }
+        document.getElementById("donate-name")?.focus();
+        return;
+      }
+      if (!email || !RE_EMAIL_FRONT.test(email)) {
+        if (errEl) { errEl.textContent = "Veuillez saisir une adresse email valide."; errEl.hidden = false; }
+        document.getElementById("donate-email")?.focus();
+        return;
+      }
+      if (errEl) errEl.hidden = true;
+
+      donateSubmitBtn.classList.add("is-loading");
+      donateSubmitBtn.disabled = true;
 
       try {
-        const res = await fetch("/api/donation/create-checkout", {
+        const res  = await fetch("/api/donation/intent", {
           method:  "POST",
           headers: { "Content-Type": "application/json" },
           body:    JSON.stringify({
             amountCents: selectedAmount * 100,
-            donorName:   name  || undefined,
-            donorEmail:  email || undefined,
+            donorName:   name,
+            donorEmail:  email,
+            methode:     activeTab,
           }),
         });
         const data = await res.json();
 
-        if (!data.success || !data.redirectUrl) {
-          if (haErrors) haErrors.textContent = data.error || "Une erreur est survenue. Veuillez réessayer.";
+        if (!data.success) {
+          if (errEl) { errEl.textContent = data.error || "Une erreur est survenue. Veuillez réessayer."; errEl.hidden = false; }
           return;
         }
 
-        // Redirection vers HelloAsso pour le paiement sécurisé
-        window.location.href = data.redirectUrl;
+        // ── Affichage de l'étape de confirmation ──────────────
+        if (stepForm)    stepForm.hidden    = true;
+        if (stepSuccess) stepSuccess.hidden = false;
+
+        const successEmailEl = document.getElementById("success-email");
+        if (successEmailEl) successEmailEl.textContent = email;
+
+        const montantFmt = data.montant.toFixed(2).replace(".", ",") + " €";
+
+        if (data.methode === "virement") {
+          document.getElementById("success-virement").hidden = false;
+          document.getElementById("success-cheque").hidden   = true;
+          document.getElementById("success-iban").textContent    = data.iban  || "—";
+          document.getElementById("success-bic").textContent     = data.bic   || "—";
+          document.getElementById("success-montant").textContent = montantFmt;
+          document.getElementById("success-ref").textContent     = data.refId || "—";
+
+          if (data.qrCodeDataUrl) {
+            const qrWrap = document.getElementById("success-qr");
+            const qrImg  = document.getElementById("success-qr-img");
+            if (qrWrap) qrWrap.hidden = false;
+            if (qrImg)  qrImg.src     = data.qrCodeDataUrl;
+          }
+        } else {
+          document.getElementById("success-virement").hidden        = true;
+          document.getElementById("success-cheque").hidden          = false;
+          document.getElementById("success-cheque-montant").textContent = montantFmt;
+          document.getElementById("success-cheque-ref").textContent     = data.refId || "—";
+        }
+
+        // Toast de confirmation
+        const toast      = document.getElementById("donate-toast");
+        const toastClose = document.getElementById("donate-toast-close");
+        if (toast) {
+          toast.hidden = false;
+          setTimeout(() => toast.classList.add("is-visible"), 50);
+          const hideToast = () => {
+            toast.classList.remove("is-visible");
+            setTimeout(() => (toast.hidden = true), 400);
+          };
+          setTimeout(hideToast, 10000);
+          toastClose?.addEventListener("click", hideToast, { once: true });
+        }
 
       } catch {
-        if (haErrors) haErrors.textContent = "Impossible de joindre le serveur. Vérifiez votre connexion et réessayez.";
+        if (errEl) {
+          errEl.textContent = "Impossible de joindre le serveur. Vérifiez votre connexion ou appelez-nous au 07 49 96 63 33.";
+          errEl.hidden = false;
+        }
       } finally {
-        haSubmitBtn.classList.remove("is-loading");
-        haSubmitBtn.disabled = false;
+        donateSubmitBtn.classList.remove("is-loading");
+        donateSubmitBtn.disabled = false;
       }
     });
   }
 
-  // Retour depuis HelloAsso avec ?don=merci → afficher un toast de remerciement
-  const urlParams  = new URLSearchParams(window.location.search);
+  // Lien de retour avec ?don=merci (ex: dans un email)
+  const urlParams = new URLSearchParams(window.location.search);
   if (urlParams.get("don") === "merci") {
     history.replaceState({}, "", window.location.pathname + window.location.hash);
     const toast      = document.getElementById("donate-toast");
@@ -787,6 +881,38 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     });
   }
+
+  // ──────────────────────────────────────────
+  // 14. DROPDOWNS DE NAVIGATION — aria-expanded & fermeture
+  // ──────────────────────────────────────────
+  const dropdownItems = document.querySelectorAll(".nav__item--has-dropdown");
+
+  dropdownItems.forEach((item) => {
+    const trigger = item.querySelector(".nav__link");
+    if (!trigger) return;
+
+    const open  = () => trigger.setAttribute("aria-expanded", "true");
+    const close = () => trigger.setAttribute("aria-expanded", "false");
+
+    item.addEventListener("mouseenter", open);
+    item.addEventListener("mouseleave", close);
+    item.addEventListener("focusin",    open);
+    item.addEventListener("focusout",   (e) => {
+      if (!item.contains(e.relatedTarget)) close();
+    });
+
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && trigger.getAttribute("aria-expanded") === "true") {
+        close();
+        trigger.focus();
+      }
+    });
+
+    // Fermer le dropdown au clic sur un lien à l'intérieur
+    item.querySelectorAll(".nav__dropdown-link").forEach((link) => {
+      link.addEventListener("click", close);
+    });
+  });
 
   // ──────────────────────────────────────────
   // 15. NAVIGATION SMOOTH SCROLL AVEC DÉCALAGE EN-TÊTE
